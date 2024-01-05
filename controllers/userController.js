@@ -50,19 +50,22 @@ export const register = async(req,res)=>{
 }
 
 export const login = async(req,res)=>{
+    const {email,password} = req.body;
     try {
-        const {email,password} = req.body;
-        const user = await User.findOne(email);
+        const user = await User.findOne({email});
         if(!user){
             res.status(StatusCodes.NOT_FOUND).json({msg: "User not found please register"})
+            return
         }
-        if(user.password!==password){
+        const match = await bcrypt.compare(password,user.password)
+        if(match){
+            res.status(StatusCodes.OK).json({user})
+        }
+        else{
             res.status(StatusCodes.UNAUTHORIZED).json({msg: "Wrong password"})
-        }
-    
-        res.status(StatusCodes.OK).json({user})
+        }    
     } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).json({msg: "something went wrong"})
+        res.status(StatusCodes.BAD_REQUEST).send(error);
     }
 }
 
