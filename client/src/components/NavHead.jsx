@@ -2,7 +2,9 @@ import React from 'react'
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import logo from "../assets/images/logo.png";
-import styled from "styled-components";
+import {NavLink} from 'react-router-dom';
+import Wrapper from '../assets/css/Navigation';
+
 const NavHead = () => {
   return (
          <Wrapper>
@@ -11,26 +13,18 @@ const NavHead = () => {
                 <p>Social Networking For Everyone</p>
             </Nav>
             <Nav>
-                <Nav.Link href="#deets" className='link'>More deets</Nav.Link>
-            <Nav.Link href="#memes" className='link'>
-              Dank memes
-            </Nav.Link>
+            <NavLink to='/login' className='link'>
+              Login / 
+            </NavLink>
+            <NavLink to='/register' className='link'>
+               Register
+            </NavLink>
             </Nav>
             </Wrapper>
             
   )
 }
 
-const Wrapper = styled.div`
-    display: flex;
-    justify-content: space-between; 
-    background-color: #082e54;
-    padding: 10px;
 
-    p{
-        color: white;
-    }
-
-`
 
 export default NavHead
