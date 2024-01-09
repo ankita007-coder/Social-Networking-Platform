@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 app.use('/api/v1/users',userRouter);
 app.use('/api/v1/posts',postRouter);
-app.use('api/v1/groups',groupRouter);
+app.use('/api/v1/groups',groupRouter);
 
 const port = process.env.PORT;
 try {
