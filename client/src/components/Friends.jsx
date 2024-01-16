@@ -7,14 +7,6 @@ const Friends = () => {
     <Wrapper>
       <div className='friends'>
         <img src={profile} alt="profile" />
-        <img src={profile} alt="profile" />
-        <img src={profile} alt="profile" />
-        <img src={profile} alt="profile" />
-        <img src={profile} alt="profile" />
-        <img src={profile} alt="profile" />
-        <img src={profile} alt="profile" />
-        <img src={profile} alt="profile" />
-        <img src={profile} alt="profile" />
       </div>
     </Wrapper>
   )
@@ -26,11 +18,11 @@ const Wrapper = styled.div`
   .friends{
     margin: 10px;
     padding: 10px;
+    border: 1px solid var(--grey-800);
+    width:30%;
   }
   img{
-    margin: 3px;
-    width:30%;
-
+    width: 100%;
   }  
 `
 export default Friends

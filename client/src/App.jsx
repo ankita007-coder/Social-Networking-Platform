@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Friends, 
           Groups, 
           Home, 
@@ -8,21 +8,29 @@ import { Friends,
           Profile, 
           Register 
         } from './pages'
+import { AuthProvider, useAuth } from './utils/AuthContext'
 
+const PrivateRoute = ({element, ...props})=>{
+    const {isLoggedIn} =useAuth();
+    return isLoggedIn ? element: <Navigate to='/login'/>
+}
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/register' element={<Register/>}/>
-        <Route path='/members' element={<Friends/>}/>
-        <Route path='/groups' element={<Groups/>}/>
-        <Route path='/profile' element={<Profile/>}/>
-        <Route path='/photos' element={<Photos/>}/>
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/login' element={<Login/>}/>
+          <Route path='/register' element={<Register/>}/>
+          <Route path="/members" element={<PrivateRoute element={<Friends />} />} />
+          <Route path="/groups" element={<PrivateRoute element={<Groups />} />} />
+          <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+          <Route path="/photos" element={<PrivateRoute element={<Photos />} />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+
   )
 }
 

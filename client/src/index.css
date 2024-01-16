@@ -339,12 +339,7 @@ ul {
 
 .me-auto .link{
   text-decoration: none;
-  color: var(--text-color);
   margin-left: 10px;
   padding: 10px;
 }
 
-.me-auto.link.active{
-  background-color:var(--background-color);
-  color: var(--white);
-}

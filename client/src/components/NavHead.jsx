@@ -4,21 +4,27 @@ import Navbar from 'react-bootstrap/Navbar';
 import logo from "../assets/images/logo.png";
 import {NavLink} from 'react-router-dom';
 import Wrapper from '../assets/css/Navigation';
+import { useAuth } from '../utils/AuthContext';
 
 const NavHead = () => {
+  const {isLoggedIn,logout} = useAuth();
   return (
          <Wrapper>
             <Nav>
-                <Navbar.Brand href="#home"><img src={logo} alt="logo"/></Navbar.Brand>
+                <Navbar.Brand ><NavLink to='/'><img src={logo} alt="logo"/></NavLink></Navbar.Brand>
                 <p>Social Networking For Everyone</p>
             </Nav>
             <Nav>
-            <NavLink to='/login' className='link'>
-              Login / 
-            </NavLink>
-            <NavLink to='/register' className='link'>
-               Register
-            </NavLink>
+              {
+                isLoggedIn? <button onClick={logout}>Logout</button> :
+                <> <NavLink to='/login' className='link'>
+                Login / 
+              </NavLink>
+              <NavLink to='/register' className='link'>
+                 Register
+              </NavLink></>
+              }
+           
             </Nav>
             </Wrapper>
             

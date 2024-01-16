@@ -14,15 +14,17 @@ const Wrapper= styled.div`
   .form div{
     margin: 5px;
   }
-  input{
+  input,select{
     width: 100%;
     border: 1px solid  var(--primary-300);
+    padding:8px;
   }
   input[type="submit"]{
     background-color:var(--primary-300);
     color: white;
     padding:8px;
     transition: ease-in-out 0.5s;
+    margin-top: 8px;
   }
   input[type="submit"]:hover{
     background-color:white;
@@ -39,6 +41,19 @@ const Wrapper= styled.div`
   .link:hover{
     cursor:pointer;
   }
+  h3{
+    text-align: center;
+    color: var(--primary-500)
+  }
+ .radio{
+    display: flex;
+    flex-direction: row;
+  }
+  .radio div{
+    display: flex;
+    flex-direction: row;
+  }
 `
+
 
 export default Wrapper;

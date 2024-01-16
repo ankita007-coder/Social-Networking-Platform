@@ -2,6 +2,7 @@ import React from 'react'
 import Header from './Header'
 import styled from 'styled-components'
 import AsideBox from './AsideBox'
+import CreatePost from './CreatePost'
 
 const Layout = () => {
   return (
@@ -11,7 +12,7 @@ const Layout = () => {
     </div>
     <div className='body'>
     <main>
-
+      <CreatePost/>
     </main>
     <aside>
       <AsideBox/>
@@ -27,7 +28,8 @@ const Wrapper= styled.div`
     display: flex;
   }
   main{
-    width: 70%;
+    width: 65%;
+    margin: 10px;
   }
   aside{
     width: 30%;

@@ -16,35 +16,40 @@ const NavBar = () => {
             <NavLink to="/" 
                       className='link' 
                       style={({ isActive }) => ({
+                        color: isActive?'var(--text-color)':'var(--text-color)',
                         backgroundColor: isActive ? '#e7e7e7': '',
                       })}>Home</NavLink>
             <NavLink to="/members" 
                       className='link'
                       style={({ isActive }) => ({
+                        color: isActive?'var(--text-color)':'var(--text-color)',
                         backgroundColor: isActive ? '#e7e7e7': '',
                       })}>Members</NavLink>
             <NavLink to="/groups" 
                       className='link'
                       style={({ isActive }) => ({
+                        color: isActive?'var(--text-color)':'var(--text-color)',
                         backgroundColor: isActive ? '#e7e7e7': '',
                       })}>Groups</NavLink>
             <NavLink to="/photos" 
                       className='link'
                       style={({ isActive }) => ({
+                        color: isActive?'var(--text-color)':'var(--text-color)',
                         backgroundColor: isActive ? '#e7e7e7': '',
                       })}>Photos</NavLink>
             <NavLink to="/profile" 
                       className='link'
                       style={({ isActive }) => ({
+                        color: isActive?'var(--text-color)':'var(--text-color)',
                         backgroundColor: isActive ? '#e7e7e7': '',
                       })}>Profile</NavLink>
           </Nav>
-          <Nav>
+          {/* <Nav>
             <Nav.Link href="#deets">More deets</Nav.Link>
             <Nav.Link eventKey={2} href="#memes">
               Dank memes
             </Nav.Link>
-          </Nav>
+          </Nav> */}
         </Navbar.Collapse>
       </Container>
     </Navbar>
