@@ -5,6 +5,7 @@ import { addComment,
          deletePost, 
          showAllPosts 
     } from "../controllers/postController.js";
+import authMiddleware from "../middlewares/authMiddlewares.js";
 
 
 const router = Router();

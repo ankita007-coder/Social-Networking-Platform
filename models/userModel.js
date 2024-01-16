@@ -23,9 +23,21 @@ const userSchema = new mongoose.Schema({
         enum: ['Female','Male']
     },
     profession: String,
-    bio: String,
+    profile:{
+        url: String
+    },
     photos:{
         url : String
+    },
+    friends: {
+        accepted: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User', // Reference to the User model
+        }],
+        pending: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User', // Reference to the User model
+        }]
     },
     createdAt:{
         type: Date,

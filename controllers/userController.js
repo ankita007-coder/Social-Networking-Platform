@@ -1,6 +1,8 @@
 import User from "../models/userModel.js"
 import { StatusCodes } from "http-status-codes"
 import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
+
 export const getAllUsers = async(req,res)=>{
     try {
         const users = await User.find({})
@@ -45,7 +47,7 @@ export const register = async(req,res)=>{
             msg: "User Created"
         })
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error)
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg:error})
     }
 }
 
@@ -57,18 +59,35 @@ export const login = async(req,res)=>{
             res.status(StatusCodes.NOT_FOUND).json({msg: "User not found please register"})
             return
         }
-        const match = await bcrypt.compare(password,user.password)
-        if(match){
-            res.status(StatusCodes.OK).json({user})
-        }
-        else{
+        const match = await bcrypt.compare(password,user.password);
+        if(!match){
             res.status(StatusCodes.UNAUTHORIZED).json({msg: "Wrong password"})
-        }    
+            return
+        }  
+        const token = jwt.sign({userId:user._id},process.env.JWT_SECRET_KEY);
+            console.log("signin", token)
+        res.status(StatusCodes.OK).json({token,user})
     } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).send(error);
+        res.status(StatusCodes.BAD_REQUEST).json({error});
     }
 }
 
-// export const logout = async(req,res)=>{
-
-// }
+export const getProfile = async (req, res) => {
+    //console.log(req.user)
+    try {
+     
+        const userId = req.user.userId;
+      const user = await User.findById(userId).select('-password');
+  
+      if (!user) {
+        return res.status(StatusCodes.NOT_FOUND).json({ msg: 'User not found' });
+      }
+  
+      //console.log('Profile retrieved:', user);
+      res.status(StatusCodes.OK).json({user});
+    } catch (error) {
+     // console.error('Error fetching profile:', error);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: 'Internal Server Error' });
+    }
+  };
+  

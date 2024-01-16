@@ -10,7 +10,6 @@ const likeSchema = new mongoose.Schema({
 const commentSchema = new mongoose.Schema({
     content: {
         type: String,
-        required: true
     },
     author:{
         type: mongoose.Schema.Types.ObjectId,
@@ -24,14 +23,12 @@ const commentSchema = new mongoose.Schema({
 })
 
 const postSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
     content: {
         type: String,
         required: true
     },
+    imageUrl: String,
+    videoUrl: String,
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
