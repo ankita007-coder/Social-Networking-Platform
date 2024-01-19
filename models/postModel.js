@@ -28,7 +28,6 @@ const postSchema = new mongoose.Schema({
         required: true
     },
     imageUrl: String,
-    videoUrl: String,
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

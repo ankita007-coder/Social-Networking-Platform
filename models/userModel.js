@@ -23,12 +23,10 @@ const userSchema = new mongoose.Schema({
         enum: ['Female','Male']
     },
     profession: String,
-    profile:{
-        url: String
-    },
-    photos:{
-        url : String
-    },
+    profilePic:String,
+    photos:[{
+        type:String
+    }],
     friends: {
         accepted: [{
             type: mongoose.Schema.Types.ObjectId,

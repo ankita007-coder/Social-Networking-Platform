@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { addMemberToGroup, createGroups, getAllGroups } from "../controllers/groupController.js";
+import authMiddleware from "../middlewares/authMiddlewares.js"
 
 const router = Router();
 

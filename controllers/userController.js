@@ -2,6 +2,8 @@ import User from "../models/userModel.js"
 import { StatusCodes } from "http-status-codes"
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
+import multer from "multer";
+import path from "path";
 
 export const getAllUsers = async(req,res)=>{
     try {
@@ -41,7 +43,7 @@ export const register = async(req,res)=>{
                 gender,
                 profession,
                 bio,
-                photos
+                profilePic: 'profilePic.png'
             })
         res.status(StatusCodes.CREATED).json({
             msg: "User Created"
@@ -91,3 +93,37 @@ export const getProfile = async (req, res) => {
     }
   };
   
+
+const imageStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads/profilePic/');
+      },
+      filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+      }
+    });
+
+const uploadImage = multer({
+    storage: imageStorage, // Fixed typo: 'imageStorage' instead of 'imageStorage'
+    limits: { fileSize: 10000000000 },
+    }).single('profilePicture');
+      
+export const profilePicUpdate = (req, res) => {
+    uploadImage(req, res, async (err) => {
+        if (err) {
+            console.log(err);
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: err.message });
+        }
+
+        try {
+            console.log(req.user)
+            const userId = req.user.userId;
+            const imageUrl = req.file ? req.file.path : '';
+            await User.findByIdAndUpdate(userId,{$set: {profilePic: imageUrl}});
+            res.status(StatusCodes.OK).json({ msg: 'Profile pic updated' });
+        } catch (error) {
+            console.error(error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: 'Internal Server Error' });
+        }
+    });
+};
