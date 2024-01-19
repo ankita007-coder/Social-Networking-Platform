@@ -44,12 +44,23 @@ const NavBar = () => {
                         backgroundColor: isActive ? '#e7e7e7': '',
                       })}>Profile</NavLink>
           </Nav>
-          {/* <Nav>
-            <Nav.Link href="#deets">More deets</Nav.Link>
-            <Nav.Link eventKey={2} href="#memes">
-              Dank memes
-            </Nav.Link>
-          </Nav> */}
+          <Nav className='small-screen'>
+            <NavLink to='/members'
+                      className='link'
+                      style={({ isActive }) => ({
+                        color: isActive?'var(--text-color)':'var(--text-color)',
+                        backgroundColor: isActive ? '#e7e7e7': '',
+                      })}>View All Friends</NavLink>
+            <NavLink
+                      to='/memes'
+                      className='link'
+                      style={({ isActive }) => ({
+                        color: isActive?'var(--text-color)':'var(--text-color)',
+                        backgroundColor: isActive ? '#e7e7e7': '',
+                      })}>
+              View all groups
+            </NavLink>
+          </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>

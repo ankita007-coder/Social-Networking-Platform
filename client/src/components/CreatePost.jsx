@@ -3,11 +3,12 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import styled from 'styled-components'
 import { useAuth } from '../utils/AuthContext';
+import { MdFileUpload } from 'react-icons/md';
 
 const CreatePost = () => {
     const [content,setContent] = useState('');
     const [image,setImage]= useState(null);
-    const [video,setVideo] = useState(null);
+  
     const {userDetails} = useAuth();
     const imageHandler = (e)=>{
         const selectedImage = e.target.files[0];
@@ -15,10 +16,6 @@ const CreatePost = () => {
         console.log(selectedImage);
     }
 
-    const videoHandler = (e)=>{
-        const selectedVideo = e.target.files[0];
-        setVideo(selectedVideo);
-    }
 
     const handlePostSubmit = async (e) => {
         e.preventDefault();
@@ -26,7 +23,6 @@ const CreatePost = () => {
           const formData = new FormData();
           formData.append('content', content);
           formData.append('image', image);
-          formData.append('video', video);
           formData.append('author', userDetails._id);
             console.log(formData);
           const response = await axios.post('http://localhost:8000/api/v1/posts', formData, {
@@ -38,6 +34,7 @@ const CreatePost = () => {
       
           if (response.status === 200) {
             toast.success(response.data.msg);
+            setContent('');
           }
         } catch (error) {
             console.log(error.response);
@@ -61,23 +58,15 @@ const CreatePost = () => {
                     <button type="submit">Submit</button>
                     </div>
                     <div style={{margin: '10px'}}>
-                        <label htmlFor='image'>Image</label>
+                        <label htmlFor='image'><MdFileUpload /> Upload</label>
                         <input type="file" 
                                 name="image" 
                                 id="image" 
-                                accept="image/*" 
+                                accept="image/*,video/*" 
                                 onChange={imageHandler}
                                 style={{display:'none'}}
                                 />
 
-                        <label htmlFor='video'>Video</label>
-                        <input type="file" 
-                                name="video" 
-                                id="video" 
-                                accept="video/*" 
-                                style={{display:'none'}}
-                                onChange={videoHandler}
-                                />
                     </div>
                 </div>
             </form>
@@ -96,6 +85,7 @@ const Wrapper = styled.div`
         justify-content: center;
         border: 1px solid var(--grey-900);        
         h4{
+          color: white;
             padding: 5px;
             background-color: var(--primary-500);
         }

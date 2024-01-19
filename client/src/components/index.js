@@ -5,3 +5,5 @@ export {default as AsideBox} from './AsideBox';
 export {default as NavHead} from './NavHead';
 export {default as Navbar} from './Navbar';
 export {default as Layout} from './Layout';
+export {default as CreatePost} from './CreatePost';
+export {default as DisplayPost} from './DisplayPost';

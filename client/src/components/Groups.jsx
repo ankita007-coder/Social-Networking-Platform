@@ -13,7 +13,7 @@ const Groups = () => {
       setData(d.groups);
       console.log(d.groups)
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -25,7 +25,7 @@ const Groups = () => {
     <Wrapper>
       <div className='friends'>
       {
-        data.map((d)=>{
+        data.slice(0,3).map((d)=>{
           return (
             <div className='box' key={d._id}>
             <div className='image'>

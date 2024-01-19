@@ -3,6 +3,8 @@ import Header from './Header'
 import styled from 'styled-components'
 import AsideBox from './AsideBox'
 import CreatePost from './CreatePost'
+import DisplayPost from './DisplayPost'
+
 
 const Layout = () => {
   return (
@@ -13,6 +15,7 @@ const Layout = () => {
     <div className='body'>
     <main>
       <CreatePost/>
+      <DisplayPost/>
     </main>
     <aside>
       <AsideBox/>
@@ -33,6 +36,14 @@ const Wrapper= styled.div`
   }
   aside{
     width: 30%;
+  }
+  @media only screen and (max-width: 992px){
+    aside{
+      display:none;
+    }
+    main{
+      width: 100%;
+    }
   }
 `
 export default Layout

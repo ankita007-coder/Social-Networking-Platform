@@ -3,26 +3,63 @@ import styled from 'styled-components'
 import { AsideBox, Header } from '../components';
 import axios from "axios";
 import profile from '../assets/images/profile.png'
+import { FaPlus } from "react-icons/fa";
+import Dialog from '../components/Dialog';
+import { useAuth } from '../utils/AuthContext';
+import toast from 'react-hot-toast';
 
 const url = "http://localhost:8000/api/v1/groups";
+
 const Groups = () => {
   const [data,setData] = useState([]);
+  const [dialogBox, setDialogBox] = useState(false);
+  const [overlay,setOverlay] = useState(false);
+  const [groupJoin,setGroupJoin] = useState([]);
+  const {userDetails} = useAuth();
   const fetchData= async()=>{
+    
     try {
-      const response = await axios.get(url);
+      const response = await axios.get(url,
+        {
+          params: {
+              userId: userDetails._id,
+      }});
       const d = response.data;
       setData(d.groups);
-      console.log(d.groups)
+      //console.log(d.groups)
     } catch (error) {
-      console.log(error)
+      //console.log(error)
+      toast.error("Error in fetching groups");
     }
   }
   const handleClick= ()=>{
-
+    setDialogBox(true);
+    setOverlay(true);
   }
+  const handleCLoseDialog=()=>{
+    setDialogBox(false);
+    setOverlay(false);
+  }
+  const handleJoin = async(groupId,index)=>{
+    
+    const response = await axios.post(`http://localhost:8000/api/v1/groups/${groupId}`,{
+      userId: userDetails._id,
+    },)
+    //console.log(response.data)
+
+    if(response.data.msg==="Group joined"){
+   
+        setGroupJoin((prevGroup)=>{
+          const newGroup = [...prevGroup];
+          newGroup[index]=true;
+          return newGroup;
+        });
+      }
+    }
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [data]);
   
   return (
     <Wrapper>
@@ -31,11 +68,11 @@ const Groups = () => {
     </div>
     <div className='body'>
     <main>
-      <h2>GROUPS</h2>
+        <h2>GROUPS </h2>     
       <hr/>
       <div>
       {
-        data.map((d)=>{
+        data.map((d,index)=>{
           return (
             <div className='box' key={d._id}>
             <div className='images'>
@@ -44,7 +81,11 @@ const Groups = () => {
             <div className='text'>
                 <h4>{d.name}</h4>
                 <p>{d.description}</p>
-                <button onClick={handleClick} className='join'>Join Group</button>  
+                <button className='join'
+                onClick={()=>handleJoin(d._id,index)}
+                 disabled={d.isMember||groupJoin[index]}>
+              {d.isMember||groupJoin[index] ? 'Joined' : 'Join Group'}
+            </button>
             </div>   
             
             </div>
@@ -52,16 +93,37 @@ const Groups = () => {
         })
       }
       </div>
+      {
+        overlay && <Overlay/>
+      }
+      {
+        dialogBox && <Dialog onClose={handleCLoseDialog} 
+                              setOverlay={setOverlay} />
+      }
     </main>
+   
     <aside>
       <AsideBox/>
     </aside>
+    </div>
+    <div id='addGroup' onClick={handleClick}>
+      <FaPlus className='icon' />
     </div>
     </Wrapper>
     
   )
 }
 
+const Overlay = styled.div`
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  filter: blur(10px);
+  top: 0;
+  left: 0;
+  z-index: 999;
+`
 const Wrapper= styled.div`
   .body{
     display: flex;
@@ -74,6 +136,34 @@ const Wrapper= styled.div`
   }
   aside{
     width: 30%;
+  }
+  h2{
+    font-size: 40px;
+    margin: 10px;
+  }
+  #addGroup{
+    position: fixed;
+    bottom: 0px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-500);
+    color: white;
+    border-radius: 50%;
+    box-shadow: var(--shadow-1);
+    padding: 25px;
+    margin: 10px;
+    font-size: 2rem;
+    transition: ease-in-out 0.5s;
+    .icon{
+      padding: 0px;
+    }
+  }
+  #addGroup:hover{
+    background-color: white;
+    color: var(--primary-500);
+    box-shadow: none;
+    border: 1px solid var(--primary-500);
   }
 
   .images img{
@@ -90,6 +180,7 @@ const Wrapper= styled.div`
     margin: 8px;
     border-radius: var(--borderRadius);
     padding: 10px;
+    align-items:center;
   }
   .images{
     width: 25%;
@@ -98,6 +189,14 @@ const Wrapper= styled.div`
     background-color: transparent;
     border-radius: var(--borderRadius);
     padding: 4px 8px
+  }
+  @media only screen and (max-width: 992px){
+    aside{
+      display:none;
+    }
+    main{
+      width: 100%;
+    }
   }
 `
 export default Groups
